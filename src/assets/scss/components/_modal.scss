@@ -1,0 +1,42 @@
+@use "sass:color";
+@use "../tools" as *;
+// div.modal
+//  => div.modal-body
+//      => div.modal-header
+//          => button.modal-close
+//      => div.modal-content
+
+// Modal Variables
+$modal-bg: color.scale($black, $alpha: -20%) !default;
+$modal-padding: $gutter-base !default;
+$modal-btn-padding: $gutter-sm $gutter-base !default;
+$perspective: 1000px !default;
+
+.modal {
+  color: $white;
+  @include position($height: 100vh, $position: fixed, $zIndex: $zIndex-modal);
+  background: $modal-bg;
+  perspective: $perspective;
+  .modal-body {
+    height: 100%;
+    position: relative;
+    padding: $modal-padding;
+    .modal-header {
+      position: absolute;
+      top: auto;
+      .btn {
+        border-radius: 0;
+        padding: $modal-btn-padding;
+        font-size: $font-size-base;
+      }
+    }
+    .modal-content {
+      height: 100%;
+      @extend %flex-center;
+      img {
+        max-height: 100%;
+        max-width: 100%;
+      }
+    }
+  }
+}

@@ -1,0 +1,50 @@
+@use "tools" as *;
+/* All keyframes */
+// Hover On To Up Icon
+@keyframes hvr-icon-up {
+    0%, 100% {
+        top: 0;
+    }
+    40% {
+        top: 40%;
+    }
+}
+
+// Hover on Tabs Icon
+@keyframes hvr-icon-float {
+    100% {
+        #{$right-dir}: $gutter-md + 6px;
+    }
+}
+@keyframes hvr-icon-bob {
+    0%, 100% {
+        #{$right-dir}: $gutter-md + 6px;
+    }
+    50% {
+        #{$right-dir}: $gutter-md + 2px;
+    }
+}
+
+// Modal Animation
+@keyframes slide-in {
+  0% {
+    @include transform-3d(
+      rotateY(#{$minus-dir + 180deg}) translateX(#{$minus-dir + 100%}),
+      $left-dir center
+    );
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

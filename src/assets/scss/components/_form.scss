@@ -1,0 +1,56 @@
+@use "sass:selector";
+@use "../tools" as *;
+
+
+  // Form Variables
+  $form-padding:  $gutter-base !default;
+  $input-padding: $gutter-sm !default;
+  $input-border: $border-width solid $border-primary;
+  $field-gutter:  $gutter-sm !default;
+
+form {
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    @include media-up("md") {
+      flex-direction: row;
+      margin-left: -$field-gutter;
+      margin-right: -$field-gutter;
+      padding-top: $field-gutter;
+      padding-bottom: $field-gutter;
+    }
+    .field {
+      padding: $field-gutter 0;
+      @include media-up("md") {
+        width: 33.33%;
+        flex: 1 0 33.33%;
+        padding: 0 $field-gutter;
+      }
+    }
+  }
+  > .field {
+    padding-top: $field-gutter;
+    padding-bottom: $field-gutter;
+  }
+  label {
+    display: inline-block;
+    margin-bottom: $gutter-sm;
+  }
+  #{selector.nest(".field", "input, textarea, select")} {
+    width: 100%;
+    padding: $input-padding;
+    border: $input-border;
+    border-radius: $radius-width;
+    &:focus {
+      outline: $input-border;
+    }
+  }
+  textarea {
+    line-height: $line-height-md;
+    resize: vertical;
+  }
+  button.center {
+    display: flex;
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,132 @@
+@use "sass:color";
+@use "../tools" as *;
+
+// card + [ | ]
+//      => card-img
+//              => buttons
+//                    => icon 1
+//                    => icon 2
+//      => card-body
+//              => card-title
+//              => card-text
+
+// Card Variables
+$card-width: 33.33% !default;
+$card-padding: $gutter-base;
+$card-radius: $radius-width !default;
+$card-border: $border-width !default;
+$card-img-height: 220px !default;
+
+.card {
+  width: 100%;
+  overflow: hidden;
+  &:not(:last-child) {
+    margin-bottom: $gutter-base;
+  }
+  .card-img {
+    height: $card-img-height;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border: solid $border-width $border-color;
+    border-top-left-radius: $card-radius;
+    border-top-right-radius: $card-radius;
+    img {
+      height: 100%;
+      flex: 1 0 100%;
+      @include transition(transform);
+    }
+    
+    .buttons {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      height: 100%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      [type="button"] {
+        height: 35px;
+        width: 35px;
+        line-height: 35px;
+        @include transition(
+          $timing-fun: cubic-bezier(0.6, -0.28, 0.735, 0.045)
+        );
+        &:first-child {
+          top: -70%;
+        }
+        &:last-child {
+          bottom: -70%;
+        }
+      }
+    }
+    &:hover {
+      img {
+        transform: scale(1.2) rotateZ(-6deg);
+      }
+      .buttons [type="button"]:first-child {
+        top: 0;
+      }
+      .buttons [type="button"]:last-child {
+        bottom: 0;
+      }
+    }
+  }
+  .card-body {
+    padding: $card-padding;
+    border: solid $border-width $border-color;
+    border-bottom-left-radius: $card-radius;
+    border-bottom-right-radius: $card-radius;
+    .card-title a {
+      color: $secondary-color;
+      @include transition(color);
+      &:hover {
+        color: $primary-color;
+      }
+    }
+    .card-text:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+@include media-up("sm") {
+  .card-list {
+    .card {
+      width: 100%;
+      display: flex;
+      .card-img {
+        flex: 0 0 33.33%;
+        max-width: 33.33%;
+        border-top-#{$left-dir}-radius: $card-radius;
+        border-top-#{$right-dir}-radius: 0;
+        border-bottom-#{$left-dir}-radius: $card-radius;
+      }
+      .card-body {
+        flex: 0 1 auto;
+        // border-top-#{$left-dir}-radius: 0;
+        border-top-#{$right-dir}-radius: $card-radius;
+        border-bottom-#{$right-dir}-radius: $card-radius;
+        border-bottom-#{$left-dir}-radius: 0;
+      }
+    }
+  }
+}
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+  .card {
+    @include media-up("sm") {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+    @include media-up("md") {
+      flex: 0 0 33.33%;
+      max-width: 33.33%;
+    }
+    border-right: 15px solid transparent;
+    border-left: 15px solid transparent;
+  }
+}

@@ -1,0 +1,75 @@
+@use "tools/variables" as *;
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+}
+
+body {
+  font: {
+    family: $font-name;
+    size: $font-size-base;
+    weight: $font-weight-base;
+  }
+  margin: 0 auto;
+  line-height: $line-height-base;
+  background-color: $body-bg;
+}
+
+main:not(.page) > section {
+  padding-top: $section-gutter;
+  padding-bottom: $section-gutter;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 {
+  font-size: $font-size-xl;
+}
+
+h2 {
+  font-size: $font-size-md;
+}
+
+h1:first-child, h2:first-child {
+  margin-top: 0;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+p {
+  line-height: $line-height-md;
+  color: $gray-70;
+  text-align: justify;
+}
+
+button {
+  border: 0;
+  background: none;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  text-align: inherit;
+}
+
+[type="button"],
+[type="submit"] {
+  cursor: pointer;
+  line-height: unset;
+}
+
+:focus-visible {
+  outline: 2px solid $light-color;
+}

@@ -1,0 +1,111 @@
+@use "../tools" as *;
+// carousel
+//  => carousel-inner
+//      => carousel-item
+//          => item-caption
+//              => item-title
+//              => item-desc
+//          => item-img + ovarlay-img
+//  => carousel-control
+//      => prev
+//      => next
+
+  // Carousel Variables
+  $carousel-height:       500px !default;
+  $carousel-padding-y:    $gutter-xl !default;
+  $carousel-padding-x:    $gutter-xl !default;
+
+.carousel {
+  position: relative;
+  height: $carousel-height;
+  overflow-x: clip;
+  overflow-y: visible;
+  .carousel-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+    @include position();
+    // &:not(.active) {
+    //   display: none;
+    // }
+    .item-caption {
+      padding: $carousel-padding-y;
+    }
+  }
+  .item-title {
+    font-size: $font-size-lg;
+  }
+  .sub-title {
+    color: $primary-color;
+    @include media-up("sm") {
+      font-size: $font-size-md;
+    }
+  }
+  .item-desc {
+    margin-bottom: 20px;
+    font-weight: normal;
+    color: $light-color;
+    display: none;
+    @include media-up("md") {
+      display: block;
+    }
+  }
+  .carousel-control {
+    .prev,
+    .next {
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: $font-size-xl;
+      color: $primary-color;
+      opacity: 0.5;
+      @include transition(opacity);
+      &:hover {
+        opacity: 1;
+      }
+      @include media-down("xs") {
+        top: 100%;
+        transform: translateY(calc(-100% - $gutter-base));
+      }
+    }
+    .prev {
+      #{$left-dir}: $gutter-base;
+      @include media-down("xs") {
+        #{$left-dir}: calc(30%);
+      }
+      &::after {
+        @include insert-chevron($left-dir);
+      }
+    }
+    .next {
+      #{$right-dir}: $gutter-base;
+      @include media-down("xs") {
+        #{$right-dir}: calc(30%);
+      }
+      &::after {
+        @include insert-chevron($right-dir);
+      }
+    }
+  }
+  &.img-fill .carousel-item .item-caption {
+    @include media-up("xl") {
+      width: 70%;
+    }
+  }
+  &.img-fill {
+    @include media-up("sm") {
+      height: calc(100vh - $navbar-height);
+    }
+    .carousel-control .prev,
+    .carousel-control .next {
+      top: calc((100%) / 2);
+      font-size: $font-size-xl + 10;
+      color: $light-color;
+      @include media-down("xs") {
+        top: 100%;
+      }
+    }
+  }
+}

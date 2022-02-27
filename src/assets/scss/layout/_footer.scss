@@ -1,0 +1,97 @@
+@use "sass:color";
+@use "sass:math";
+@use "../tools" as *;
+
+// Footer
+$footer-bg: $gray-90 !default;
+$footer-color: $white !default;
+$footer-padding: $section-gutter * 1.5 0 !default;
+$footer-border-width: $border-width !default;
+$footer-border-color: $gray-70 !default;
+$footer-items: 2 !default;
+
+footer {
+  color: $footer-color;
+  background: $footer-bg;
+  .nav-link {
+    color: inherit;
+  }
+  .items {
+    padding: $footer-padding;
+    @include media-up("sm") {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      margin-left: -$gutter-base;
+      margin-right: -$gutter-base;
+    }
+    .item {
+      @include media-down("xs") {
+        &:not(:last-child) {
+          margin-bottom: $gutter-base;
+          padding-bottom: $gutter-base;
+          border-bottom: $footer-border-width solid $footer-border-color;
+        }
+      }
+      @include media-down("md") {
+        &:not(:last-child):not(:nth-child(n + 3)) {
+          margin-bottom: $gutter-base;
+          padding-bottom: $gutter-base;
+          border-bottom: $footer-border-width solid $footer-border-color;
+        }
+      }
+      @include media-up("sm") {
+        flex-basis: 50%;
+        max-width: 50%;
+        padding-left: $gutter-base;
+        padding-right: $gutter-base;
+      }
+      @include media-up("lg") {
+        flex-basis: 25%;
+        max-width: 25%;
+      }
+    }
+  }
+  p {
+    color: inherit;
+  }
+  .social {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    a {
+      margin: 0 math.div($gutter-sm, 2);
+    }
+  }
+  .links a {
+    display: block;
+    padding: $gutter-sm 0;
+    font-size: $font-size-sm;
+    @include transition(color);
+    &:hover {
+      color: $primary-color;
+    }
+  }
+  form {
+    input,
+    textarea {
+      color: color.scale($footer-bg, $lightness: 60%);
+      background: color.scale($footer-bg, $lightness: 10%);
+    }
+  }
+  .sub-footer {
+    padding: $gutter-md 0;
+    letter-spacing: 1px;
+    font-size: $font-size-sm;
+    font-weight: 300;
+    color: $footer-color;
+    background: color.scale($footer-bg, $lightness: 5%);
+    a {
+      color: $primary-color;
+      @include transition(color);
+      &:hover {
+        color: $secondary-color;
+      }
+    }
+  }
+}

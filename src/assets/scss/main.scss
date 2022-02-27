@@ -1,0 +1,39 @@
+@use "sass:color";
+@use "tools/variables" as *;
+
+$primary-color: #a9ce39;
+$navbar-height:   150px;
+$heading-overlay-bg:    color.scale($black, $alpha: -30%);
+$overlay-bg:    color.scale($black, $alpha: -30%);
+
+$radius-width: $gutter-md;
+
+// Basic
+@use "reboot";
+@use "grid";
+@use "classes";
+
+// Components
+@use "components/nav" with (
+  $nav-color: $secondary-color,
+  $nav-active-color: $primary-color,
+  $nav-link-padding: $gutter-sm $gutter-base
+);
+@use "components/navbar" with (
+  $navbar-padding: $gutter-base
+);
+@use "components/carousel";
+@use "components/breadcrumb";
+@use "components/icons";
+@use "components/buttons";
+@use "components/card";
+@use "components/modal";
+@use "components/form";
+
+
+// Layout
+@use "layout/footer" with (
+  $footer-color: color.scale($light-color, $lightness: -10%),
+);
+@use "layout/pages";
+@use "keyframes";

@@ -1,0 +1,32 @@
+@use "../tools/variables" as *;
+
+// breadcrumb
+//      => breadcrumb-item
+//                    => a with active or not
+
+// Breadcrumb Variables
+$breadcrumb-mark:         "|" !default;
+$breadcrumb-mark-gutter:  $gutter-sm !default;
+$breadcrumb-color:        $light-color !default;
+$breadcrumb-active-color: $primary-color !default;
+
+.breadcrumb {
+  display: flex;
+  .breadcrumb-item {
+    &:not(:first-child)::before {
+      content: $breadcrumb-mark;
+      padding-right: $breadcrumb-mark-gutter;
+      padding-left: $breadcrumb-mark-gutter;
+    }
+    a {
+      color: $breadcrumb-color;
+      transition: opacity 0.3s;
+      &.active {
+        color: $breadcrumb-active-color;
+      }
+      &:hover:not(.active) {
+        opacity: 0.8;
+      }
+    }
+  }
+}

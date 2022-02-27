@@ -1,0 +1,119 @@
+@use "sass:map";
+@use "tools" as *;
+
+.text-center {
+  text-align: center;
+}
+
+.text-larger {
+  font-size: $font-size-xl * 2;
+}
+.text-large {
+  font-size: $font-size-xl * 1.5;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-inline-block {
+  display: inline-block !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.d-none {
+  display: none !important;
+}
+
+@include make-colors("bg") using ($color) {
+  background: $color;
+  color: if($color == $light-color, map.get($colors-reverse, "light"), $white);
+}
+
+@include make-colors("text") using ($color) {
+  color: $color;
+}
+
+.underline::after {
+  content: "";
+  width: 150px;
+  height: 3px;
+  display: block;
+  background: $primary-color;
+  margin-top: $gutter-md;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.overlay-img {
+  @include position($zIndex: -1);
+  background-size: cover;
+  background-position: center;
+  &::before {
+    @include position;
+    background-color: $overlay-bg;
+  }
+  .img-fill & {
+    height: calc(100% + $navbar-height);
+    top: -$navbar-height;
+  }
+}
+.overlay-bg {
+  // &::before {
+  @include position($zIndex: 0);
+  overflow: hidden;
+  background-color: $overlay-bg;
+  opacity: 0;
+  @include transition(opacity);
+  // }
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.heading {
+  position: relative;
+  padding: $gutter-xl 0;
+  text-align: center;
+  .overlay-img::before {
+    background-color: $heading-overlay-bg;
+  }
+}
+
+#to-up {
+  // display: none;
+  @include media-down("xs") {
+    #{$left-dir}: 15px;
+  }
+  @include position($to-up-size, $to-up-size, fixed, 80%, 5%, $zIndex-to-up);
+  border-radius: $to-up-radius;
+  background: $secondary-color;
+  .fas {
+    color: $secondary-color;
+    position: relative;
+    @include transition(color, $delay: 0.1s);
+  }
+  &::after {
+    border-radius: $to-up-radius;
+    transform: scale(1);
+    @include transition(top, 0.3s, ease-in, 0.1s);
+  }
+  &:hover {
+    .fas {
+      color: $white;
+      animation: hvr-icon-up 0.3s ease-out;
+    }
+    &::after {
+      top: -100%;
+    }
+  }
+}

@@ -4,7 +4,16 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    publicPath: process.env.BASE_URL,
+    uploadDir: "uploads/",
+  },
+
+  getters: {
+    uploadPath: (state) => (path) => {
+      return state.publicPath + state.uploadDir + path;
+    },
+  },
   mutations: {},
   actions: {},
   modules: {},
