@@ -1,11 +1,20 @@
 <template>
   <div class="service">
-    <div class="avatar text-center"><img :src="$store.getters.uploadPath(data.avatar)" :alt="data.name" /></div>
-    <h2 class="name text-center">{{ data.name }}</h2>
-    <p class="disc">{{ data.description }}</p>
+    <div class="avatar text-center">
+      <img
+        :src="$store.getters.uploadPath(data.avatar)"
+        :alt="$i18n.locale !== 'en' && data[$i18n.locale] ? data[$i18n.locale].name : data.name"
+      />
+    </div>
+    <h2 class="name text-center">
+      {{ $i18n.locale !== "en" && data[$i18n.locale] ? data[$i18n.locale].name : data.name }}
+    </h2>
+    <p class="disc">
+      {{ $i18n.locale !== "en" && data[$i18n.locale] ? data[$i18n.locale].description : data.description }}
+    </p>
     <div class="order text-center">
       <router-link class="btn btn-primary" :to="{ name: 'Order', params: { service_id: data.id } }">
-        طلب خدمة
+        {{ $t("post.service_order") }}
       </router-link>
     </div>
   </div>
@@ -41,6 +50,9 @@ export default {
     }
     &:nth-child(3n + 2) .name {
       color: $primary-color;
+    }
+    .disc {
+      text-align-last: center;
     }
   }
 }

@@ -1,5 +1,6 @@
 module.exports = {
   publicPath: "/frontend/holol/",
+
   // outputDir: "dist/frontend/holol",
   // assetsDir: "frontend/holol",
 
@@ -21,6 +22,16 @@ module.exports = {
       // chunks to include on this page, by default includes
       // extracted common chunks and vendor chunks.
       // chunks: ["chunk-vendors", "chunk-common", "index"],
+    },
+  },
+
+  pluginOptions: {
+    i18n: {
+      locale: "en",
+      fallbackLocale: "en",
+      localeDir: "locales",
+      enableInSFC: true,
+      enableBridge: false,
     },
   },
 };

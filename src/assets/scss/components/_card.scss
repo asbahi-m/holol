@@ -25,19 +25,23 @@ $card-img-height: 220px !default;
   }
   .card-img {
     height: $card-img-height;
-    display: flex;
-    justify-content: center;
     position: relative;
     overflow: hidden;
     border: solid $border-width $border-color;
     border-top-left-radius: $card-radius;
     border-top-right-radius: $card-radius;
+    .img {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
     img {
       height: 100%;
       flex: 1 0 100%;
       @include transition(transform);
     }
-    
     .buttons {
       display: flex;
       align-items: center;
@@ -102,11 +106,12 @@ $card-img-height: 220px !default;
         border-top-#{$left-dir}-radius: $card-radius;
         border-top-#{$right-dir}-radius: 0;
         border-bottom-#{$left-dir}-radius: $card-radius;
+        border-bottom-#{$right-dir}-radius: 0;
       }
       .card-body {
         flex: 0 1 auto;
-        // border-top-#{$left-dir}-radius: 0;
         border-top-#{$right-dir}-radius: $card-radius;
+        border-top-#{$left-dir}-radius: 0;
         border-bottom-#{$right-dir}-radius: $card-radius;
         border-bottom-#{$left-dir}-radius: 0;
       }

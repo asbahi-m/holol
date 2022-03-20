@@ -1,12 +1,16 @@
 @use "sass:selector";
+@use "sass:math";
 @use "../tools" as *;
 
 
   // Form Variables
   $form-padding:  $gutter-base !default;
+  $field-gutter: if($form-padding > 0, math.div($form-padding, 2), $gutter-sm) !default;
+  $filed-border-width: $border-width !default;
+  $filed-border-color: $primary-color !default;
+  $field-radius: $radius-width !default;
   $input-padding: $gutter-sm !default;
   $input-border: $border-width solid $border-primary;
-  $field-gutter:  $gutter-sm !default;
 
 form {
   .form-group {

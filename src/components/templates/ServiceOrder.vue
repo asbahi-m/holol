@@ -3,45 +3,45 @@
     <h1 class="title underline">{{ title }}</h1>
     <form action="" method="" @submit.prevent="checkForm">
       <div class="field">
-        <label for="name">اسمك الكريم:</label>
-        <input type="text" id="name" placeholder="أدخل اسمك" v-model.trim="order.name" required />
+        <label for="name">{{ $t("form.name") }}:</label>
+        <input type="text" id="name" :placeholder="$t('form.enter_name')" v-model.trim="order.name" required />
       </div>
       <div class="form-group">
         <div class="field">
-          <label for="phone">رقم الجوال:</label>
-          <input type="tel" id="phone" placeholder="أدخل رقم جوالك" v-model.number="order.phone" />
+          <label for="phone">{{ $t("form.phone") }}:</label>
+          <input type="tel" id="phone" :placeholder="$t('form.enter_phone')" v-model.number="order.phone" />
         </div>
         <div class="field">
-          <label for="email">البريد الإلكتروني:</label>
-          <input type="email" id="email" placeholder="أدخل بريدك" v-model.trim="order.email" required />
+          <label for="email">{{ $t("form.email") }}:</label>
+          <input type="email" id="email" :placeholder="$t('form.enter_email')" v-model.trim="order.email" required />
         </div>
       </div>
       <div class="field">
-        <label for="service">نوع الخدمة:</label>
+        <label for="service">{{ $t("form.type") }}:</label>
         <select id="service" v-model="order.service" required>
-          <option value="0" disabled>اختر أحد الخدمات</option>
-          <option v-for="service in services" :key="service.id" :value="service.id">{{ service.name }}</option>
+          <option value="0" disabled>{{ $t("form.choose_service") }}</option>
+          <option v-for="service in services" :key="service.id" :value="service.id">
+            {{ $i18n.locale !== "en" && service[$i18n.locale] ? service[$i18n.locale].name : service.name }}
+          </option>
         </select>
       </div>
       <div class="field">
-        <label for="description">وصف الطلب:</label>
+        <label for="description">{{ $t("form.description") }}:</label>
         <textarea
           type="text"
           id="description"
           rows="3"
-          placeholder="أدخل وصف الخدمة"
+          :placeholder="$t('form.enter_desc')"
           v-model.trim="order.desc"
         ></textarea>
       </div>
-      <button type="submit" class="btn btn-primary center">إرسال</button>
+      <button type="submit" class="btn btn-primary center">{{ $t("form.send") }}</button>
     </form>
     <div class="overlay-img" :style="{ 'background-image': `url(${image})` }"></div>
   </div>
 </template>
 
 <script>
-import Data from "/db.json";
-
 export default {
   name: "ServiceOrder",
   data() {
@@ -53,7 +53,6 @@ export default {
         service: 0,
         desc: "",
       },
-      services: Data.services,
       errors: [],
     };
   },
@@ -61,6 +60,7 @@ export default {
   props: {
     image: String,
     title: String,
+    services: Array,
   },
 
   mounted() {
@@ -76,10 +76,15 @@ export default {
         this.order.service &&
         this.order.desc.length < 200
       ) {
-        const serviceName = Data.services.filter((item) => item.id == this.order.service);
+        const serviceName = this.services.filter((item) => item["id"] == this.order.service)[0];
         this.$alert(
-          `اسمك: ${this.order.name} | بريدك: ${this.order.email} | نوع الخدمة: ${serviceName[0].name}`,
-          "تم إرسال سالتك بنجاح",
+          `${this.$t("form.name")}: ${this.order.name} | ${this.$t("form.email")}: ${this.order.email} |
+          ${this.$t("form.type")}: ${
+            this.$i18n.locale !== "en" && serviceName[this.$i18n.locale]
+              ? serviceName[this.$i18n.locale].name
+              : serviceName.name
+          }`,
+          this.$t("form.success_service_order"),
           "success"
         ).then(
           (this.order.name = ""),
@@ -91,12 +96,13 @@ export default {
         return true;
       }
       this.errors = [];
-      if (!this.order.name) this.errors.push("يجب كتابة الاسم");
-      if (isNaN(this.order.phone)) this.errors.push("الجوال يجب أن يكون رقماً أو فارغاً");
-      if (!this.order.email) this.errors.push("يجب كتابة الإيميل");
-      if (!this.order.service) this.errors.push("يجب اختيار أحد الخدمات");
-      if (this.order.desc.length > 200) this.errors.push("وصف الطلب يحتوي على نص طويل جداً");
-      this.$alert(this.errors.join(", "), "خطأ! لم يتم إرسال رسالتك", "error");
+      if (!this.order.name) this.errors.push(this.$t("form.error_missing_field", [this.$t("form.name")]));
+      if (isNaN(this.order.phone)) this.errors.push(this.$t("form.error_nan_or_empty", [this.$t("form.phone")]));
+      if (!this.order.email) this.errors.push(this.$t("form.error_missing_field", [this.$t("form.email")]));
+      if (!this.order.service) this.errors.push(this.$t("form.error_missing_choice", [this.$t("post.service")]));
+      if (this.order.desc.length > 200)
+        this.errors.push(this.$t("form.error_long_text", [this.$t("form.description")]));
+      this.$alert(this.errors.join(", "), this.$t("form.error_order_failed"), "error");
     },
   },
 };

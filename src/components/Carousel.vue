@@ -9,21 +9,33 @@
         :key="item.id"
       >
         <div class="item-caption container text-center">
-          <!-- <div class="text-bold text-larger">حلول الخليج{{ index }}</div>
+          <!-- <div class="text-bold text-larger">{{ $t("site_name") }}</div>
           <div class="text-large">Gulf Solutions</div> -->
-          <div class="sub-title uppercase">Gulf Solutions</div>
-          <h1 class="item-title uppercase">{{ item.title }}</h1>
-          <p class="item-desc text-center">{{ item.brief ? item.brief : item.content | truncate(260) | htmlString }}</p>
+          <div class="sub-title uppercase">{{ $t("site_name") }}</div>
+          <h1 class="item-title uppercase">
+            {{ $i18n.locale !== "en" && item[$i18n.locale] ? item[$i18n.locale].title : item.title }}
+          </h1>
+          <p class="item-desc text-center">
+            {{
+              $i18n.locale !== "en" && item[$i18n.locale]
+                ? item[$i18n.locale].brief
+                  ? item[$i18n.locale].brief
+                  : item[$i18n.locale].content
+                : item.brief
+                ? item.brief
+                : item.content | truncate(260) | htmlString
+            }}
+          </p>
           <div class="buttons">
             <router-link
               type="button"
               :to="{ name: 'Post', params: { id: item.id } }"
               class="btn btn-primary read-more"
             >
-              المزيد من المعلومات
+              {{ $t("post.more_info") }}
             </router-link>
             <router-link type="button" class="btn btn-primary btn-outline" :to="{ name: 'Order' }">
-              طلب خدمة الآن
+              {{ $t("post.service_order_now") }}
             </router-link>
           </div>
         </div>
@@ -83,10 +95,16 @@ export default {
   transition: transform 0.5s ease-in;
 }
 .slide-next-enter {
-  transform: translateX(#{$plus-dir + 100%});
+  transform: translateX(100%);
+}
+[dir="rtl"] .slide-next-enter {
+  transform: translateX(-100%);
 }
 .slide-next-leave-to {
-  transform: translateX(#{$minus-dir + 100%});
+  transform: translateX(-100%);
+}
+[dir="rtl"] .slide-next-leave-to {
+  transform: translateX(100%);
 }
 
 .slide-prev-enter-active,
@@ -94,9 +112,15 @@ export default {
   transition: transform 0.5s ease-out;
 }
 .slide-prev-enter {
-  transform: translateX(#{$minus-dir + 100%});
+  transform: translateX(-100%);
+}
+[dir="rtl"] .slide-prev-enter {
+  transform: translateX(100%);
 }
 .slide-prev-leave-to {
-  transform: translateX(#{$plus-dir + 100%});
+  transform: translateX(100%);
+}
+[dir="rtl"] .slide-prev-leave-to {
+  transform: translateX(-100%);
 }
 </style>

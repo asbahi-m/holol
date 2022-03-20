@@ -1,27 +1,25 @@
 <template>
   <main class="page">
-    <Heading :title="title" :image="image" />
+    <Heading :title="$t('nav.contact_us')" :image="require('@/assets/images/contact-us.jpg')" />
 
     <section class="content">
       <div class="container">
         <div class="contact-us">
           <div class="info">
-            <h1 class="title underline">تواصل معنا</h1>
-            <p>
-              هناك حقيقة مثبتة منذ زمن طويل، وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي
-              توضع الفقرات في الصفحة التي يقرأها.ولذلك يتم استخدام طريقة لوريم أيبسوم لأنها تعطي توزيعاً طبيعياً للأحرف
-              للأحرف عوضاً عن استخدام 'هنا يوجد محتوى نصي'.
-            </p>
+            <h1 class="title underline">{{ $t("nav.contact_us") }}</h1>
+            <p>{{ $t("contact_msg") }}</p>
             <div>
               <a href="https://goo.gl/maps/j2V8MHcf7wpLcn5B8" target="_blank">
-                <i class="fas fa-map-marker-alt"></i> النخيل، الدمام 32244
+                <i class="fas fa-map-marker-alt"></i><span>{{ $t("address") }}</span>
               </a>
             </div>
             <div>
-              <a href="tel:00966138310311"><i class="fas fa-phone-volume"></i> +966 13 831 0311</a>
+              <a href="tel:00966138310311">
+                <i class="fas fa-phone-volume"></i><span class="ltr">+966 13 831 0311</span>
+              </a>
             </div>
             <div>
-              <a href="mailto:info@holol.com"><i class="fas fa-envelope-open-text"></i> info@holol.com</a>
+              <a href="mailto:info@holol.com"><i class="fas fa-envelope-open-text"></i><span>info@holol.com</span></a>
             </div>
           </div>
           <ContactUsTmp :contact="contact" />
@@ -45,20 +43,39 @@ import ContactUsTmp from "@/components/templates/ContactUsTmp.vue";
 
 export default {
   name: "ContactUs",
+
   components: {
     Heading,
     ContactUsTmp,
   },
+
   data() {
     return {
-      title: "اتصل بنا",
-      image: require("@/assets/images/contact-us.jpg"),
       contact: {
         name: "",
         phone: "",
         email: "",
         message: "",
       },
+    };
+  },
+
+  metaInfo() {
+    return {
+      titleTemplate: (chunk) => `${chunk} - ${this.$t("nav.contact_us")}`,
+      meta: [
+        {
+          vmid: "thumbnail",
+          name: "thumbnail",
+          content: require("@/assets/images/contact-us.jpg"),
+        },
+        {
+          vmid: "og:title",
+          property: "og:title",
+          content: this.$t("nav.contact_us"),
+        },
+        { vmid: "og:image", property: "og:image", content: require("@/assets/images/contact-us.jpg") },
+      ],
     };
   },
 };
@@ -91,10 +108,15 @@ $gutter: 20px;
       text-align: center;
       border: 1px solid $primary-color;
       border-radius: 50%;
+      margin-right: 5px;
     }
     &:hover {
       opacity: 0.8;
     }
   }
+}
+[dir="rtl"] .contact-us .info a i {
+  margin-right: unset;
+  margin-left: 5px;
 }
 </style>

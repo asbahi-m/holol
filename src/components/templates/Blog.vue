@@ -1,6 +1,13 @@
 <template>
   <div v-if="posts.length" :class="{ 'card-list': layout == 'list', 'card-grid': layout == 'grid' }">
-    <Posts v-for="post in posts" :key="post.id" :data="post" :layout="layout" @modal_open_event="modal_open_event" />
+    <Posts
+      v-for="post in posts"
+      :key="post.id"
+      :data="post"
+      :displaySwap="layout == 'grid' ? false : true"
+      :layout="layout"
+      @modal_open_event="modal_open_event"
+    />
   </div>
 </template>
 

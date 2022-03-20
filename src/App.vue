@@ -52,6 +52,18 @@ export default {
   },
 
   mounted() {
+    // Change language if localStorage found or browser locale is ar
+    const locale = localStorage.getItem("locale_site");
+    if (locale) {
+      this.$i18n.locale = locale;
+    } else if (navigator.language === "ar") {
+      this.$i18n.locale = navigator.language.substring(0, 2);
+    }
+    // Add RTL style file:
+    if (this.$i18n.locale === "ar") {
+      require("@/assets/scss/style.rtl.scss");
+    }
+
     if (this.modal.show) {
       window.onkeyup = function (x) {
         if (x.keyCode == 27 || x.which == 27) {
@@ -87,11 +99,46 @@ export default {
       }, 500);
     },
   },
+
+  // metaInfo: {
+  //   title: "Gulf Solutions",
+  //   // titleTemplate: "%s - Yay!",
+  //   meta: [{ vmid: "description", name: "description", content: "Description Gulf Solutions" }],
+  // },
+  // eslint-disable-next-line no-dupe-keys
+  metaInfo() {
+    const locale = this.$i18n.locale;
+    return {
+      title: this.$t("site_name"),
+      meta: [
+        { vmid: "description", name: "description", content: this.$t("site_brief") },
+        { vmid: "thumbnail", name: "thumbnail", content: require("@/assets/images/logo.png") },
+        { name: "twitter:card", content: "summary" },
+        { property: "og:url", content: this.$route.path },
+        { vmid: "og:title", property: "og:title", content: this.$t("site_name") },
+        { vmid: "og:description", property: "og:description", content: this.$t("site_brief") },
+        { vmid: "og:image", property: "og:image", content: require("@/assets/images/logo.png") },
+        { property: "og:type", content: "Article" },
+        { property: "og:locale", content: locale },
+      ],
+      htmlAttrs: {
+        lang: locale,
+        dir: locale === "ar" ? "rtl" : null,
+      },
+      // titleTemplate: "%s - Home",)
+    };
+  },
+  // metaInfo() {
+  //   // const locale = this.$i18n.locale;
+  //   return {
+  //     title: this.$t("site_name"),
+  //     // titleTemplate: (chunk) => (locale === "en" ? `${chunk} - Welcome` : `${chunk} - مرحباً`),
+  //   };
+  // },
 };
 </script>
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap");
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.4s !important;

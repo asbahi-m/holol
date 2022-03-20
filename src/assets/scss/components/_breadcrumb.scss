@@ -12,8 +12,10 @@ $breadcrumb-active-color: $primary-color !default;
 
 .breadcrumb {
   display: flex;
+  flex-wrap: wrap;
+  line-height: $line-height-md;
   .breadcrumb-item {
-    &:not(:first-child)::before {
+    &:not(:last-child)::after {
       content: $breadcrumb-mark;
       padding-right: $breadcrumb-mark-gutter;
       padding-left: $breadcrumb-mark-gutter;

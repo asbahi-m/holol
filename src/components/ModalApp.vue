@@ -9,7 +9,7 @@
       @keyup.esc="$emit('modal_close_event')"
     >
       <transition name="side-slide">
-        <div class="modal-body container" v-show="modal.show">
+        <div class="modal-body container" v-show="modal.show" @click.self="$emit('modal_close_event')">
           <div class="modal-header">
             <button type="button" class="modal-close btn btn-primary" @click="$emit('modal_close_event')">
               <i class="fas fa-times"></i>

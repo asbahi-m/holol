@@ -1,7 +1,12 @@
 <template>
   <div class="post-meta">
-    <small v-if="author"><i class="far fa-user"></i> {{ author }}</small>
-    <small v-if="date"><i class="far fa-calendar-alt"></i> {{ date | toDate }}</small>
+    <span v-if="author"><i class="far fa-user"></i>{{ author }}</span>
+    <span v-if="category">
+      <i class="fas fa-sitemap"></i
+      >{{ $i18n.locale !== "en" && category[$i18n.locale] ? category[$i18n.locale].name : category.name }}
+    </span>
+    <!-- <small v-if="date"><i class="far fa-calendar-alt"></i> {{ date | toDate($i18n.locale) }}</small> -->
+    <span v-if="date"><i class="far fa-calendar-alt"></i>{{ $d(new Date(date), "short") }}</span>
   </div>
 </template>
 
@@ -11,7 +16,7 @@ import Data from "/db.json";
 export default {
   name: "PostMeta",
 
-  props: ["user", "date"],
+  props: ["user", "category", "date"],
 
   computed: {
     author() {
@@ -27,15 +32,11 @@ export default {
 @use "../assets/scss/tools/variables" as *;
 
 .post-meta {
-  display: flex;
-  flex-wrap: wrap;
-  :not(:first-child)::before {
+  :not(:last-child)::after {
     content: "";
-    padding: 0 $gutter-sm;
   }
   i {
     color: $primary-color;
-    padding: 0 5px;
   }
 }
 </style>

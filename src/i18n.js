@@ -1,0 +1,42 @@
+import Vue from "vue";
+import VueI18n from "vue-i18n";
+
+Vue.use(VueI18n);
+const setDateTimeFormats = {
+  short: {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  },
+  // year: "2-digit, numeric",
+  // month: "2-digit, numeric, narrow, short, long",
+  // day: "2-digit, numeric",
+  // hour: "2-digit, numeric",
+  // minute: "2-digit, numeric",
+  // second: "2-digit, numeric",
+  // timeZoneName: "short, long",
+};
+const dateTimeFormats = {
+  en: setDateTimeFormats,
+  ar: setDateTimeFormats,
+};
+
+function loadLocaleMessages() {
+  const locales = require.context("./locales", true, /[A-Za-z0-9-_,\s]+\.json$/i);
+  const messages = {};
+  locales.keys().forEach((key) => {
+    const matched = key.match(/([A-Za-z0-9-_]+)\./i);
+    if (matched && matched.length > 1) {
+      const locale = matched[1];
+      messages[locale] = locales(key);
+    }
+  });
+  return messages;
+}
+
+export default new VueI18n({
+  locale: process.env.VUE_APP_I18N_LOCALE || "en",
+  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || "en",
+  messages: loadLocaleMessages(),
+  dateTimeFormats,
+});

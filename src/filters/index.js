@@ -10,9 +10,9 @@ Vue.filter("htmlString", (val) => {
   return htmlString.body.textContent;
 });
 
-Vue.filter("toDate", (val) => {
+Vue.filter("toDate", (val, locale) => {
   // let date = new Intl.DateTimeFormat("ar-US", { dateStyle: "short" });
   // return date.format(new Date(val));
   let date = new Date(val);
-  if (date instanceof Date) return date.toLocaleDateString();
+  if (date instanceof Date) return date.toLocaleDateString(locale);
 });

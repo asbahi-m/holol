@@ -130,7 +130,7 @@ $chevron: (
 // Variables with RTL Direction
 $rtl: false !default;
 
-$font-name: if(not $rtl, string.unquote("Arial, Tahoma"), "Traditional Arabic") !default;
+$font-name: if(not $rtl, string.unquote('"Segoe UI", Arial, sans-serif'), "Traditional Arabic") !default;
 $left-dir: if(not $rtl, left, right);
 $right-dir: if(not $rtl, right, left);
 $plus-dir: if(not $rtl, "", "-");

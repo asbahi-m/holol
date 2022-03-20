@@ -95,7 +95,7 @@
     }
   }
   &.img-fill {
-    @include media-up("sm") {
+    @include media-up("sm", true) {
       height: calc(100vh - $navbar-height);
     }
     .carousel-control .prev,

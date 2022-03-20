@@ -13,7 +13,7 @@
           :data="aboutUs"
           layout="list"
           :more="true"
-          moreValue="المزيد من المعلومات"
+          :moreValue="$t('post.more_info')"
           @modal_open_event="modal_open_hanler"
         />
       </div>
@@ -21,7 +21,7 @@
 
     <section id="services" class="container" v-scrollAnimate="'fade-in'">
       <h1 class="title underline">
-        <router-link :to="{ name: 'Page', params: { id: 2 } }">خدماتنا</router-link>
+        <router-link :to="{ name: 'Page', params: { id: 2 } }">{{ $t("nav.our_services") }}</router-link>
       </h1>
       <div class="services">
         <Services v-for="service in services" :data="service" :key="service.id" />
@@ -31,12 +31,15 @@
     <section id="solutions" v-scrollAnimate="'fade-in'" v-scroll="counter">
       <div class="container items">
         <div class="item" v-for="(item, index) in solutions.data" :key="item.name">
-          <img :src="require(`@/assets/images/${item.icon}`)" :alt="item.title" />
+          <img
+            :src="require(`@/assets/images/${item.icon}`)"
+            :alt="$i18n.locale !== 'en' && item[$i18n.locale] ? item[$i18n.locale].title : item.title"
+          />
           <div>
             <strong v-if="counterPlay">
               <number :ref="`number${index}`" :from="0" :to="item.count" :duration="3" />
             </strong>
-            <span>{{ item.title }}</span>
+            <span>{{ $i18n.locale !== "en" && item[$i18n.locale] ? item[$i18n.locale].title : item.title }}</span>
           </div>
         </div>
       </div>
@@ -44,7 +47,7 @@
     </section>
 
     <section id="last-posts" class="container" v-scrollAnimate="'fade-in'">
-      <h1 class="title underline">آخر المشاركات</h1>
+      <h1 class="title underline">{{ $t("last_posts") }}</h1>
       <div class="card-grid">
         <Posts
           v-for="post in lastPostsDesc"
@@ -59,12 +62,17 @@
 
     <section id="our-works" v-scrollAnimate="'fade-in'">
       <h1 class="title underline container">
-        <router-link :to="{ name: 'Page', params: { id: 8 } }">بعض أعمالنا</router-link>
+        <router-link :to="{ name: 'Page', params: { id: 8 } }">{{ $t("portfolio") }}</router-link>
       </h1>
       <div class="portfolio">
         <div class="card" v-for="work in ourWorks" :key="work.id">
           <div class="card-img">
-            <img :src="$store.getters.uploadPath(work.image)" :alt="work.title" />
+            <div class="img">
+              <img
+                :src="$store.getters.uploadPath(work.image)"
+                :alt="$i18n.locale !== 'en' && work[$i18n.locale] ? work[$i18n.locale].title : work.title"
+              />
+            </div>
             <div class="overlay-bg">
               <div class="buttons">
                 <router-link :to="{ name: 'Post', params: { id: work.id } }" type="button" class="icon icon-light">
@@ -74,13 +82,27 @@
                   type="button"
                   class="icon icon-light"
                   :data-image="$store.getters.uploadPath(work.image)"
-                  @click="modal_open_hanler(work.title, work.brief ? work.brief : work.content, work.image)"
+                  @click="
+                    modal_open_hanler(
+                      $i18n.locale !== 'en' && work[$i18n.locale] ? work[$i18n.locale].title : work.title,
+                      $i18n.locale !== 'en' && work[$i18n.locale]
+                        ? work[$i18n.locale].brief
+                          ? work[$i18n.locale].brief
+                          : work[$i18n.locale].content
+                        : work.brief
+                        ? work.brief
+                        : work.content,
+                      work.image
+                    )
+                  "
                 >
                   <i class="fas fa-expand"></i>
                 </button>
               </div>
               <div class="card-body">
-                <h2 class="card-title">{{ work.title }}</h2>
+                <h2 class="card-title">
+                  {{ $i18n.locale !== "en" && work[$i18n.locale] ? work[$i18n.locale].title : work.title }}
+                </h2>
               </div>
             </div>
           </div>
@@ -90,7 +112,7 @@
 
     <section id="customers" class="container" v-scrollAnimate="'fade-in'">
       <h1 class="title underline">
-        <router-link :to="{ name: 'Page', params: { id: 3 } }">عملائنا</router-link>
+        <router-link :to="{ name: 'Page', params: { id: 3 } }">{{ $t("nav.our_clients") }}</router-link>
       </h1>
       <div class="customers">
         <Customers v-for="customer in customers" :data="customer" :key="customer.id" />
@@ -98,16 +120,12 @@
     </section>
 
     <section id="service-order" class="container" v-scrollAnimate="'fade-in'">
-      <ServiceOrder title="طلب خدمة" :image="require('@/assets/images/service-order.jpg')" />
-      <img :src="$store.getters.uploadPath('branch3.jpg')" alt="موقع حلول الخليج" />
-      <!-- <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d893.2719823790158!2d50.09713047082533!3d26.420638898958885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xbd4a5c06677958a9!2zMjbCsDI1JzE0LjMiTiA1MMKwMDUnNDcuNyJF!5e0!3m2!1sar!2s!4v1640561690795!5m2!1sar!2s"
-        width="100%"
-        height="450"
-        style="border: 0"
-        allowfullscreen=""
-        loading="lazy"
-      ></iframe> -->
+      <ServiceOrder
+        :services="services"
+        :title="$t('post.service_order')"
+        :image="require('@/assets/images/service-order.jpg')"
+      />
+      <img :src="$store.getters.uploadPath('branch3.jpg')" :alt="$t('site_name')" />
     </section>
   </main>
 </template>
@@ -119,6 +137,7 @@ import Posts from "@/components/Posts.vue";
 import Services from "@/components/templates/Services.vue";
 import Customers from "@/components/templates/Customers.vue";
 import ServiceOrder from "@/components/templates/ServiceOrder.vue";
+import { tranlateMixin } from "@/mixins";
 
 export default {
   name: "Home",
@@ -131,19 +150,18 @@ export default {
     ServiceOrder,
   },
 
+  mixins: [tranlateMixin],
+
   data() {
     return {
       counterPlay: false,
-      aboutUs: Data.posts[0],
-      services: Data.services,
-      customers: Data.customers,
       solutions: {
         image: require("@/assets/images/soluitions.jpg"),
         data: [
-          { name: "customers", title: "عميل", icon: "icon1.png", count: 1500 },
-          { name: "exhibitions", title: "معرض", icon: "icon2.png", count: 105 },
-          { name: "ads", title: "إعلان", icon: "icon3.png", count: 1452 },
-          { name: "conferences", title: "مؤتمر", icon: "icon4.png", count: 75 },
+          { name: "customers", title: "customer", icon: "icon1.png", count: 1500, ar: { title: "عميل" } },
+          { name: "fairs", title: "fair", icon: "icon2.png", count: 105, ar: { title: "معرض" } },
+          { name: "ads", title: "ad", icon: "icon3.png", count: 1452, ar: { title: "إعلان" } },
+          { name: "conferences", title: "conference", icon: "icon4.png", count: 75, ar: { title: "مؤتمر" } },
         ],
       },
     };
@@ -151,15 +169,34 @@ export default {
 
   computed: {
     pinPosts() {
-      // let newsPosts = Data.posts.filter((item) => item.category_id == 7);
-      const pinPosts = Data.posts.map((item) => item);
+      const pinPosts = Data.posts.filter((item) => item.is_pin == true);
+      this.t_data(pinPosts, Data.t_posts, "post_id");
       return pinPosts.reverse().slice(0, 3);
+    },
+
+    aboutUs() {
+      const aboutUs = Data.posts.filter((item) => item.id == 1);
+      this.t_data(aboutUs, Data.t_posts, "post_id");
+      return aboutUs[0];
+    },
+
+    services() {
+      const services = Data.services;
+      this.t_data(services, Data.t_services, "service_id");
+      return services;
+    },
+
+    customers() {
+      const customers = Data.customers;
+      this.t_data(customers, Data.t_customers, "customer_id");
+      return customers;
     },
 
     lastPostsDesc() {
       // Category ID 7 => News Cat
       let newsPosts = Data.posts.filter((item) => item.category_id == 7);
       const lastPosts = newsPosts.map((item) => item);
+      this.t_data(lastPosts, Data.t_posts, "post_id");
       return lastPosts.reverse().slice(0, 3);
     },
 
@@ -170,21 +207,9 @@ export default {
         return [2, 4, 5, 6].some((item) => item == self.category_id);
       });
       const lastPosts = ourWorks.map((item) => item);
+      this.t_data(lastPosts, Data.t_posts, "post_id");
       return lastPosts.reverse().slice(0, 5);
     },
-  },
-
-  mounted() {
-    /* this.solutions.data[0].count = Data.customers.length;
-
-    // Category Exhibitions Id = 5
-    this.solutions.data[1].count = Data.posts.filter((item) => item.category_id == 5).length;
-
-    // Category Ads Id = 4
-    this.solutions.data[2].count = Data.posts.filter((item) => item.category_id == 4).length;
-
-    // Category Conferences Id = 6
-    this.solutions.data[3].count = Data.posts.filter((item) => item.category_id == 6).length; */
   },
 
   methods: {
@@ -345,7 +370,10 @@ section {
           font-size: 40px;
         }
         > span {
-          font-size: 30px;
+          font-size: 24px;
+          @include media-up("md") {
+            font-size: 28px;
+          }
         }
       }
     }
@@ -353,14 +381,22 @@ section {
 }
 
 #last-posts {
+  .card {
+    @include media-down("sm") {
+      flex-basis: 100%;
+      max-width: 100%;
+    }
+  }
   .card-body {
     border: 1px solid #ccc;
     padding-left: 10px;
     padding-right: 10px;
   }
   .display-swap {
-    display: flex;
-    flex-direction: column;
+    @include media-up("md") {
+      display: flex;
+      flex-direction: column;
+    }
   }
   .more {
     display: block;
@@ -416,7 +452,7 @@ section {
         align-items: center;
         img {
           min-height: 100%;
-          max-height: 100vh;
+          max-height: calc(100vh - 150px);
         }
       }
       .card-body {

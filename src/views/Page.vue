@@ -4,7 +4,7 @@
 
     <section class="content">
       <div class="container">
-        <PostContent v-if="!page.template" :data="page" />
+        <PostContent v-if="!page.template" :data="page" @modal_open_event="modal_open_hanler" />
 
         <div class="services" v-if="page.template == 'services'">
           <Services v-for="service in services" :data="service" :key="service.id" />
@@ -32,6 +32,7 @@ import PostContent from "@/components/PostContent.vue";
 import Blog from "@/components/templates/Blog.vue";
 import Services from "@/components/templates/Services.vue";
 import Customers from "@/components/templates/Customers.vue";
+import { tranlateMixin } from "@/mixins";
 
 export default {
   name: "Page",
@@ -44,22 +45,37 @@ export default {
     Customers,
   },
 
+  mixins: [tranlateMixin],
+
   computed: {
     page() {
       const pageData = Data.pages.filter((item) => item.id == this.$route.params.id);
+      this.t_data(pageData, Data.t_pages, "page_id");
       return pageData[0];
     },
+
     services() {
-      return this.page.template == "services" ? Data.services : null;
+      const servicesData = Data.services;
+      if (this.page.template == "services") {
+        this.t_data(servicesData, Data.t_services, "service_id");
+        return servicesData;
+      } else return null;
     },
+
     customers() {
       if (this.page.template == "customers") {
+        const site_locale = this.$i18n.locale;
         const allCustomers = Data.customers;
         for (const key in allCustomers) {
           const element = allCustomers[key];
           if (Object.hasOwnProperty.call(allCustomers, key)) {
             let tmpService = Data.services.filter((item) => item.id == element.service_id);
             if (tmpService.length) element.service = tmpService[0].name;
+            if (site_locale !== "en") {
+              Data.t_customers.forEach((t_ele) => {
+                if (t_ele.customer_id == element.id && t_ele.locale == site_locale) element[site_locale] = t_ele;
+              });
+            }
           }
         }
         return allCustomers;
@@ -67,13 +83,12 @@ export default {
         return null;
       }
     },
+
     posts() {
       if (this.page.template == "blog" && this.page.category_id) {
         // Get children page category
         let catChildren = Data.categories.filter((item) => item.parent_id == this.page.category_id);
-
         let allPosts;
-
         if (catChildren.length) {
           // IF Page category containe children categories
           allPosts = Data.posts.filter((item) => {
@@ -83,6 +98,7 @@ export default {
         } else {
           allPosts = Data.posts.filter((item) => item.category_id == this.page.category_id);
         }
+        this.t_data(allPosts, Data.t_posts, "post_id");
         return allPosts;
       } else {
         return null;
@@ -94,6 +110,19 @@ export default {
     modal_open_hanler(title, brief, image) {
       this.$emit("modal_open_event", title, brief, image);
     },
+  },
+
+  beforeRouteEnter(to, from, next) {
+    const exist = Data.pages.find((item) => item.id == to.params.id);
+    if (!exist) {
+      next({
+        name: "Error404",
+        params: { pathMatch: to.path.split("/").slice(1) },
+        query: to.query,
+        hash: to.hash,
+      });
+    }
+    next();
   },
 
   beforeRouteUpdate(to, from, next) {
@@ -210,6 +239,37 @@ export default {
     } else {
       this.customers = null;
     } */
+  },
+
+  metaInfo() {
+    const locale = this.$i18n.locale;
+    return {
+      titleTemplate: (chunk) =>
+        `${chunk} - ${locale !== "en" && this.page[locale] ? this.page[locale].title : this.page.title}`,
+      meta: [
+        {
+          vmid: "description",
+          name: "description",
+          content: locale !== "en" && this.page[locale] ? this.page[locale].brief : this.page.brief,
+        },
+        {
+          vmid: "thumbnail",
+          name: "thumbnail",
+          content: this.$store.getters.uploadPath(this.page.image),
+        },
+        {
+          vmid: "og:title",
+          property: "og:title",
+          content: locale !== "en" && this.page[locale] ? this.page[locale].title : this.page.title,
+        },
+        {
+          vmid: "og:description",
+          property: "og:description",
+          content: locale !== "en" && this.page[locale] ? this.page[locale].brief : this.page.brief,
+        },
+        { vmid: "og:image", property: "og:image", content: this.$store.getters.uploadPath(this.page.image) },
+      ],
+    };
   },
 };
 </script>

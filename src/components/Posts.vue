@@ -1,18 +1,18 @@
 <template>
   <div class="card" :class="{ 'display-swap': displaySwap }">
     <div class="card-img">
-      <img :src="$store.getters.uploadPath(data.image)" :alt="data.title" />
+      <div class="img">
+        <img
+          :src="$store.getters.uploadPath(data.image)"
+          :alt="$i18n.locale !== 'en' && data[$i18n.locale] ? data[$i18n.locale].title : data.title"
+        />
+      </div>
       <div class="overlay-bg">
         <div class="buttons">
           <router-link :to="{ name: 'Post', params: { id: data.id } }" type="button" class="icon icon-primary">
             <i class="fas fa-link"></i>
           </router-link>
-          <button
-            type="button"
-            class="icon icon-primary"
-            :data-image="$store.getters.uploadPath(data.image)"
-            @click="modal_open_event"
-          >
+          <button type="button" class="icon icon-primary" @click="modal_open_event">
             <i class="fas fa-expand"></i>
           </button>
         </div>
@@ -20,15 +20,27 @@
     </div>
     <div class="card-body">
       <h2 class="card-title" :class="{ underline: layout == 'list' }">
-        <router-link :to="{ name: 'Post', params: { id: data.id } }">{{ data.title }}</router-link>
+        <router-link :to="{ name: 'Post', params: { id: data.id } }">
+          {{ $i18n.locale !== "en" && data[$i18n.locale] ? data[$i18n.locale].title : data.title }}
+        </router-link>
       </h2>
       <PostMeta v-if="postMeta" :user="data.user_id" :date="data.created_at" />
-      <p class="card-text">{{ data.brief ? data.brief : data.content | htmlString | truncate }}</p>
+      <p class="card-text">
+        {{
+          $i18n.locale !== "en" && data[$i18n.locale]
+            ? data[$i18n.locale].brief
+              ? data[$i18n.locale].brief
+              : data[$i18n.locale].content
+            : data.brief
+            ? data.brief
+            : data.content | htmlString | truncate
+        }}
+      </p>
       <div class="post-map" v-if="postMap">
         <a :href="postMap.location" target="_blank"><i class="fas fa-map-marker-alt"></i> {{ postMap.name }}</a>
       </div>
       <router-link class="btn btn-primary more" v-show="more" :to="{ name: 'Post', params: { id: data.id } }">
-        {{ more ? (moreValue ? moreValue : "التفاصيل") : "" }}
+        {{ more ? (moreValue ? moreValue : $t("post.details")) : "" }}
       </router-link>
     </div>
   </div>
@@ -69,8 +81,16 @@ export default {
     modal_open_event() {
       this.$emit(
         "modal_open_event",
-        this.data.title,
-        this.data.brief ? this.data.brief : this.data.content,
+        this.$i18n.locale !== "en" && this.data[this.$i18n.locale]
+          ? this.data[this.$i18n.locale].title
+          : this.data.title,
+        this.$i18n.locale !== "en" && this.data[this.$i18n.locale]
+          ? this.data[this.$i18n.locale].brief
+            ? this.data[this.$i18n.locale].brief
+            : this.data[this.$i18n.locale].content
+          : this.data.brief
+          ? this.data.brief
+          : this.data.content,
         this.data.image
       );
     },
@@ -91,9 +111,9 @@ $card-gutter: $gutter-md;
       @include media-up("md") {
         flex-basis: 50%;
         max-width: 50%;
+        padding-right: $card-gutter;
       }
       height: 280px;
-      padding-right: $card-gutter;
       padding-bottom: $card-gutter;
       &::after {
         content: "";
@@ -101,14 +121,20 @@ $card-gutter: $gutter-md;
         width: 100%;
         position: absolute;
         top: $card-gutter;
-        right: -$card-gutter;
+        right: 0;
         z-index: -1;
         background: #eee;
       }
       .overlay-bg {
         top: -$card-gutter;
-        left: -$card-gutter;
-        right: unset;
+      }
+      @include media-up("md") {
+        &::after {
+          right: -$card-gutter;
+        }
+        .overlay-bg {
+          left: -$card-gutter;
+        }
       }
     }
     .card-body {
@@ -125,18 +151,17 @@ $card-gutter: $gutter-md;
     }
     [dir="rtl"] & {
       .card-img {
-        padding-left: $card-gutter;
-        padding-right: 0;
-        &::after {
-          left: -$card-gutter;
-          right: unset;
-        }
-        img {
-          transform: none;
-        }
-        .overlay-bg {
-          left: unset;
-          right: -$card-gutter;
+        @include media-up("md") {
+          padding-left: $card-gutter;
+          padding-right: 0;
+          &::after {
+            left: -$card-gutter;
+            right: unset;
+          }
+          .overlay-bg {
+            left: unset;
+            right: -$card-gutter;
+          }
         }
       }
       .card-body {
@@ -145,16 +170,18 @@ $card-gutter: $gutter-md;
       }
     }
     &.display-swap {
-      &:not(.no-switch):nth-child(even) {
-        .card-body {
-          padding-right: $card-gutter;
-          padding-left: 0;
+      @include media-up("sm") {
+        &:nth-child(even) {
+          .card-body {
+            padding-right: $card-gutter;
+            padding-left: 0;
+          }
         }
-      }
-      [dir="rtl"] &:not(.no-switch):nth-child(even) {
-        .card-body {
-          padding-left: $card-gutter;
-          padding-right: 0;
+        [dir="rtl"] &:nth-child(even) {
+          .card-body {
+            padding-left: $card-gutter;
+            padding-right: 0;
+          }
         }
       }
     }
@@ -163,20 +190,20 @@ $card-gutter: $gutter-md;
 .card {
   .card-img {
     border: 0;
-    border-radius: 0;
+    border-radius: 0 !important;
     .overlay-bg {
       background-color: rgba(0, 0, 0, 0.5);
     }
   }
   .card-body {
     border: 0;
-    border-radius: 0;
+    border-radius: 0 !important;
     padding-right: 0;
     padding-left: 0;
   }
   &.display-swap {
-    @include media-up("md") {
-      &:not(.no-switch):nth-child(even) {
+    @include media-up("sm") {
+      &:nth-child(even) {
         .card-img {
           order: 2;
         }

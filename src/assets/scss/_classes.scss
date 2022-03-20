@@ -32,6 +32,11 @@
   display: none !important;
 }
 
+.ltr {
+  display: inline-block;
+  direction: ltr;
+}
+
 @include make-colors("bg") using ($color) {
   background: $color;
   color: if($color == $light-color, map.get($colors-reverse, "light"), $white);

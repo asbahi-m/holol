@@ -1,0 +1,62 @@
+{
+  "site_name": "Gulf Solutions",
+  "site_brief": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \"Content here, content here\", making it look like readable English.",
+  "all_rights": "© 2018-2022, All Rights Reserved.",
+  "important_links": "Important Links",
+  "last_posts": "Latest Posts",
+  "portfolio": "Portfolio",
+  "contact_msg": "We work continuously to make your experience through technical services easier, We will get back to you within 24 hours.",
+  "address": "Al Nakheel, Dammam 32244",
+  "error404": "404 Error",
+  "error404msg": "Ooops! Page not found.",
+
+  "nav": {
+    "home": "Home",
+    "about_us": "About US",
+    "our_services": "Services",
+    "our_clients": "Clients",
+    "our_branches": "Branches",
+    "company_profile": "Profile",
+    "our_works": "Works",
+    "service_order": "Order",
+    "contact_us": "Contact Us"
+  },
+
+  "locale": {
+    "en": "English",
+    "ar": "Arabic"
+  },
+
+  "post": {
+    "more_info": "More information",
+    "details": "Details",
+    "service_order": "Service order",
+    "service_order_now": "Order now",
+    "service": "Service"
+  },
+
+  "form": {
+    "name": "Your Name",
+    "phone": "Mobile number",
+    "email": "E-mail",
+    "type": "Service type",
+    "description": "Description",
+    "message": "Message",
+    "send": "Send",
+    "enter_name": "Enter your name",
+    "enter_phone": "Enter your mobile number",
+    "enter_email": "Enter your mail address",
+    "choose_service": "Choose a service",
+    "enter_desc": "Enter service description",
+    "enter_msg": "Enter Message content",
+    "success_send_msg": "Your message has been sent successfully",
+    "success_service_order": "Service has been ordered successfully",
+    "success_thanks": "Thank you for contacting us",
+    "error_send_failed": "Failed! Your message was not sent",
+    "error_order_failed": "Failed! The service was not ordered",
+    "error_missing_field": "{0} field is missing!",
+    "error_missing_choice": "A {0} must be selected",
+    "error_nan_or_empty": "{0} must be a number or empty",
+    "error_long_text": "{0} text is too long!"
+  }
+}

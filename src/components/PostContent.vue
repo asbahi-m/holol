@@ -1,9 +1,25 @@
 <template>
   <div class="post">
-    <div class="post-img"><img :src="$store.getters.uploadPath(data.image)" :alt="data.title" /></div>
-    <h2 class="post-title">{{ data.title }}</h2>
-    <PostMeta :user="data.user_id" :date="data.created_at" />
-    <div class="post-content" v-html="data.content"></div>
+    <figure class="post-img">
+      <div class="figure-img">
+        <img
+          :src="$store.getters.uploadPath(data.image)"
+          :alt="$i18n.locale !== 'en' && data[$i18n.locale] ? data[$i18n.locale].title : data.title"
+        />
+        <div class="overlay-bg">
+          <button type="button" @click="modal_open_event"><i class="fas fa-expand"></i></button>
+        </div>
+      </div>
+      <!-- <figcaption></figcaption> -->
+    </figure>
+    <h2 class="post-title">
+      {{ $i18n.locale !== "en" && data[$i18n.locale] ? data[$i18n.locale].title : data.title }}
+    </h2>
+    <PostMeta :user="data.user_id" :category="category" :date="data.created_at" />
+    <div
+      class="post-content"
+      v-html="$i18n.locale !== 'en' && data[$i18n.locale] ? data[$i18n.locale].content : data.content"
+    ></div>
     <div class="post-map" v-if="data.map">
       <iframe
         :src="data.map.embed"
@@ -31,15 +47,24 @@ export default {
     data: [Object],
     category: [Object],
   },
+
+  methods: {
+    modal_open_event() {
+      this.$emit(
+        "modal_open_event",
+        this.$i18n.locale !== "en" && this.data[this.$i18n.locale]
+          ? this.data[this.$i18n.locale].title
+          : this.data.title,
+        this.$i18n.locale !== "en" && this.data[this.$i18n.locale]
+          ? this.data[this.$i18n.locale].brief
+            ? this.data[this.$i18n.locale].brief
+            : this.data[this.$i18n.locale].content
+          : this.data.brief
+          ? this.data.brief
+          : this.data.content,
+        this.data.image
+      );
+    },
+  },
 };
 </script>
-
-<style lang="scss" scoped>
-.post-img {
-  text-align: center;
-  width: 100%;
-  img {
-    max-width: 100%;
-  }
-}
-</style>

@@ -4,16 +4,12 @@
       <div class="items">
         <div class="item">
           <router-link class="brand d-inline-block" to="/" exact-active-class="" active-class="" exact>
-            <img src="@/assets/images/logowhite.png" alt="حلول الخليج" />
+            <img src="@/assets/images/logowhite.png" :alt="$t('site_name')" />
           </router-link>
-          <p>
-            هناك حقيقة مثبتة منذ زمن طويل، وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي
-            للنص أو شكل توضع الفقرات في الصفحة التي يقرأها.ولذلك يتم استخدام طريقة لوريم أيبسوم لأنها تعطي توزيعاً
-            طبيعياً -إلى حد ما- للأحرف عوضاً عن استخدام "هنا يوجد محتوى نصي".
-          </p>
+          <p>{{ $t("site_brief") }}</p>
         </div>
         <div class="item">
-          <h2 class="underline">روابط هامة</h2>
+          <h2 class="underline">{{ $t("important_links") }}</h2>
           <RouterLinks class="links" />
         </div>
       </div>
@@ -21,8 +17,8 @@
     <div class="sub-footer">
       <div class="container">
         <div class="copyright">
-          <span class="text-primary">حلول الخليج</span>
-          <span> جميع الحقوق محفوظة 2018 &copy;</span>
+          <span class="text-primary">{{ $t("site_name") }}</span>
+          <span> {{ $t("all_rights") }}</span>
         </div>
         <div class="social">
           <a href="#" class="icon icon-primary"><i class="fab fa-facebook-f"></i></a>

@@ -1,7 +1,14 @@
 <template>
   <div class="customer">
-    <div class="avatar"><img :src="$store.getters.uploadPath(data.avatar)" :alt="data.name" /></div>
-    <strong class="name">{{ data.name }}</strong>
+    <div class="avatar">
+      <img
+        :src="$store.getters.uploadPath(data.avatar)"
+        :alt="$i18n.locale !== 'en' && data[$i18n.locale] ? data[$i18n.locale].name : data.name"
+      />
+    </div>
+    <strong class="name">{{
+      $i18n.locale !== "en" && data[$i18n.locale] ? data[$i18n.locale].name : data.name
+    }}</strong>
     <div class="service-name">{{ data.service }}</div>
   </div>
 </template>

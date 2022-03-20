@@ -40,6 +40,11 @@ const routes = [
     name: "ContactUs",
     component: () => import(/* webpackChunkName: "page" */ "../views/ContactUs.vue"),
   },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "Error404",
+    component: () => import(/* webpackChunkName: "page" */ "../views/Error404.vue"),
+  },
 ];
 
 const router = new VueRouter({
