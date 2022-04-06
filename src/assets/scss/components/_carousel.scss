@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../tools" as *;
 // carousel
 //  => carousel-inner
@@ -11,25 +12,29 @@
 //      => next
 
   // Carousel Variables
-  $carousel-height:       500px !default;
+  $carousel-height:       400px !default;
   $carousel-padding-y:    $gutter-xl !default;
   $carousel-padding-x:    $gutter-xl !default;
+  $carousel-color: $white !default;
 
 .carousel {
   position: relative;
   height: $carousel-height;
   overflow-x: clip;
   overflow-y: visible;
+  z-index: 0;
   .carousel-item {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: $white;
+    color: $carousel-color;
     @include position();
     // &:not(.active) {
     //   display: none;
     // }
     .item-caption {
+      max-height: 100%;
+      overflow: hidden;
       padding: $carousel-padding-y;
     }
   }
@@ -45,7 +50,7 @@
   .item-desc {
     margin-bottom: 20px;
     font-weight: normal;
-    color: $light-color;
+    color: color.scale($carousel-color, $alpha: -10%);
     display: none;
     @include media-up("md") {
       display: block;
@@ -106,6 +111,28 @@
       @include media-down("xs") {
         top: 100%;
       }
+    }
+  }
+  &.slide {
+    // Carousel next style
+    .carousel-next-active {
+      transition: transform 0.5s ease-in;
+    }
+    .carousel-next-enter {
+      transform: translateX(#{$plus-dir + 100%});
+    }
+    .carousel-prev-leave-to {
+      transform: translateX(#{$minus-dir + 100%});
+    }
+    // Carousel prev style
+    .carousel-prev-active {
+      transition: transform 0.5s ease-out;
+    }
+    .carousel-prev-enter {
+      transform: translateX(#{$minus-dir + 100%});
+    }
+    .carousel-next-leave-to {
+      transform: translateX(#{$plus-dir + 100%});
     }
   }
 }

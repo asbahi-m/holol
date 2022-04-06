@@ -15,8 +15,8 @@
             {{ $i18n.locale !== "en" && category[$i18n.locale] ? category[$i18n.locale].name : category.name }}
           </router-link>
         </li>
-        <li class="breadcrumb-item">
-          <router-link :to="{ name: routeName, params: { id: data.id } }">
+        <li class="breadcrumb-item" :class="{ active: $route.params.id == data.id }">
+          <router-link :to="{ name: routeName, params: { id: data.id } }" activeClass="">
             {{
               data.title ? ($i18n.locale !== "en" && data[$i18n.locale] ? data[$i18n.locale].title : data.title) : title
             }}
@@ -58,10 +58,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.heading.img-fill {
-  padding-top: 100px;
-  .overlay-img {
-    background-position-y: 20%;
+.heading {
+  &.img-fill {
+    padding-top: 100px;
+    .overlay-img {
+      background-position-y: 20%;
+    }
+  }
+  .text-larger {
+    @media screen and (max-width: 575.98px) {
+      font-size: 30px;
+    }
   }
 }
 </style>

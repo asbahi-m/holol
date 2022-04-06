@@ -1,6 +1,6 @@
 <template>
   <header>
-    <div class="navbar navbar-secondary" :class="{ fixed: scrolling }">
+    <div class="navbar" :class="{ fixed: scrolling }">
       <div class="container">
         <router-link class="navbar-brand" to="/" exact-active-class="" active-class="" exact>
           <img
@@ -89,7 +89,7 @@ export default {
       this.localeToggle = false;
       // Add RTL style file:
       if (locale === "ar") {
-        require("@/assets/scss/style.rtl.scss");
+        require("@/assets/scss/app-extend.rtl.scss");
       }
     },
   },

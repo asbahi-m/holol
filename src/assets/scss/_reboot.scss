@@ -16,6 +16,7 @@ body {
   }
   margin: 0 auto;
   line-height: $line-height-base;
+  color: $body-color;
   background-color: $body-bg;
 }
 
@@ -24,8 +25,15 @@ main:not(.page) > section {
   padding-bottom: $section-gutter;
 }
 
+:link, :visited {
+  color: inherit;
+}
+
 a {
   text-decoration: none;
+  &:hover {
+    color: inherit;
+  }
 }
 
 h1 {
@@ -51,7 +59,7 @@ ul li {
 
 p {
   line-height: $line-height-md;
-  color: $gray-70;
+  color: $dark-color;
   text-align: justify;
 }
 

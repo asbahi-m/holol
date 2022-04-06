@@ -4,9 +4,9 @@
 //     $font-name: string.unquote("Cairo, sans-serif")
 // );
 
-@use "tools/variables" as * with (
-  $rtl: true,
-  $font-name: string.unquote("Cairo, sans-serif")
-);
+// @use "tools/variables" as * with (
+//   $rtl: true,
+//   $font-name: string.unquote("Cairo, sans-serif")
+// );
 
-@use "main";
+// @use "main";

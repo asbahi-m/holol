@@ -1,12 +1,12 @@
 @use "sass:color";
-@use "tools/variables" as *;
-
-$primary-color: #a9ce39;
-$navbar-height:   150px;
-$heading-overlay-bg:    color.scale($black, $alpha: -30%);
-$overlay-bg:    color.scale($black, $alpha: -30%);
+@use "tools/variables" as * with (
+  $primary-color: #a9ce39,
+  $navbar-height:   150px
+);
 
 $radius-width: $gutter-md;
+$heading-overlay-bg:    color.scale($black, $alpha: -30%);
+$overlay-bg:    color.scale($black, $alpha: -30%);
 
 // Basic
 @use "reboot";
@@ -15,14 +15,15 @@ $radius-width: $gutter-md;
 
 // Components
 @use "components/nav" with (
-  $nav-color: $secondary-color,
   $nav-active-color: $primary-color,
   $nav-link-padding: $gutter-sm $gutter-base
 );
 @use "components/navbar" with (
   $navbar-padding: $gutter-base
 );
-@use "components/carousel";
+@use "components/carousel" with (
+  $carousel-height: 500px
+);
 @use "components/breadcrumb";
 @use "components/icons";
 @use "components/buttons";

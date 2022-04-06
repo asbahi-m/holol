@@ -60,6 +60,8 @@
 }
 
 @mixin media-up-down($min, $max, $breakpoints: $grid-breakpoints) {
+  $min: map.get($breakpoints, $min);
+  $max: map.get($breakpoints, $max) - 0.02;
   @media (min-width: $min) and (max-width: $max) {
     @content;
   }
@@ -68,7 +70,7 @@
 @mixin make-colors($prop) {
     @each $name, $color in $colors {
         .#{$prop}-#{$name} {
-            @content($color);
+            @content($name, $color);
         }
     }
 }

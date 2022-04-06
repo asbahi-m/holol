@@ -61,7 +61,7 @@ export default {
     }
     // Add RTL style file:
     if (this.$i18n.locale === "ar") {
-      require("@/assets/scss/style.rtl.scss");
+      require("@/assets/scss/app-extend.rtl.scss");
     }
 
     if (this.modal.show) {

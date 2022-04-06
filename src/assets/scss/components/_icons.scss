@@ -1,51 +1,63 @@
+@use "sass:color";
+@use "sass:map";
 @use "../tools" as *;
 
-.icon, a.icon {
-    display: inline-block;
-    height: $icon-size;
-    width: $icon-size;
+// Icons Variables
+$icon-size: 30px !default;
+$icon-radius: 50% !default;
+
+.icon,
+a.icon {
+  display: inline-block;
+  height: $icon-size;
+  width: $icon-size;
+  border-radius: $icon-radius;
+  line-height: $icon-size;
+  font-size: inherit;
+  text-align: center;
+  color: $white;
+  background-color: $gray;
+  border-style: solid;
+  border-width: $border-width;
+  border-color: transparent;
+  position: relative;
+  overflow: hidden;
+  transform: perspective(1px) translateZ(0);
+  @include transition(color);
+  &::after {
+    @include position($zIndex: -1);
     border-radius: $icon-radius;
-    line-height: $icon-size;
-    font-size: inherit;
-    text-align: center;
+    background-color: $white;
+    transform: scale(0);
+    @include transition(transform);
+  }
+  &:hover {
     color: $gray;
-    background: $gray;
-    border-style: solid;
-    border-width: 0;
-    position: relative;
-    overflow: hidden;
-    transform: perspective(0) translateZ(0);
-    @include transition(color);
+    border-color: $gray;
     &::after {
-        @include position($zIndex: -1);
-        border-radius: $icon-radius;
-        background: $white;
-        transform: scale(2);
-        @include transition(transform);
+      transform: scale(2);
+      background-color: $white;
     }
-    &:hover {
-        color: $white;
+  }
+  @each $name, $color in $colors {
+    &.icon-#{$name} {
+      background-color: $color;
+      color: if(
+        color.lightness($color) >= 50%,
+        map.get($colors-reverse, $name),
+        $white
+      );
+      &:hover {
+        color: $color;
+        border-color: $color;
         &::after {
-            transform: scale(0);
+          background-color: if(
+            color.lightness($color) >= 50%,
+            map.get($colors-reverse, $name),
+            $white
+          );
         }
+      }
     }
-    @each $name, $color in $colors {
-        &.icon-#{$name} {
-            @if $name == "light" {
-                color: $gray-90;
-                background: $primary-color;
-            }
-            @else {
-                color: $light-color;
-                background: $light-color;
-            }
-            &:after {
-                background: $color;
-                border-color: $color;
-            }
-            &:hover {
-                color: $color;
-            }
-        }
-    }
+  }
 }

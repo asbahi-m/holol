@@ -174,9 +174,12 @@ $radius-width: $gutter-md;
   form {
     .custom-file {
       .custom-file-label::before {
-        margin-left: if($gutter-base > 0, math.div($gutter-base, 2), $gutter-sm);
-        border-top-right-radius: $radius-width;
+        left: 0;
+        right: unset;
+        border-top-left-radius: $radius-width;
+        border-top-right-radius: unset;
         border-bottom-left-radius: $radius-width;
+        border-bottom-right-radius: unset;
       }
     }
   }

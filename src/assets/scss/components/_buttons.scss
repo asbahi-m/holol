@@ -3,6 +3,7 @@
 
   // Button Variables
   $btn-font-size:     $font-size-sm !default;
+  $btn-font-weight:   bolder !default;
   $btn-padding:       $gutter-sm $gutter-md !default;
   $btn-raduis:        $radius-width !default;
   $btn-border-width:  $border-width !default;
@@ -15,20 +16,21 @@
     border-radius: $btn-raduis;
     border: $btn-border-width solid transparent;
     font-size: $btn-font-size;
-    font-weight: bold;
+    font-weight: $btn-font-weight;
     white-space: nowrap;
     color: $white;
-    border-color: $gray-70;
-    transform: perspective(0) translateZ(0px);
-    @include transition(color);
+    transform: perspective(1px) translateZ(0px);
+    @include transition;
     &::before {
         @include position($zIndex: -1);
-        background-color: $gray-70;
+        background-color: $dark-color;
+        border: $btn-border-width solid transparent;
         @include transition(transform);
     }
     &:hover {
-        color: $gray-70;
+        color: $dark-color;
         background-color: $white;
+        border-color: $dark-color;
         &::before {
             transform: scaleY(0);
         }
@@ -36,24 +38,29 @@
 }
 
 .btn-outline {
-    color: $gray-70;
+    color: $dark-color;
+    border-color: $dark-color;
     &::before {
         transform: scaleY(0);
     }
     &:hover {
         color: $white;
         background-color: transparent !important;
+        border-color: transparent;
         &::before {
             transform: scaleY(1);
         }
     }
 }
 
-@include make-colors("btn") using ($color) {
+@include make-colors("btn") using ($name, $color) {
     color: if($color == $light-color, $primary-color, null);
-    border-color: $color;
+    &:hover {
+      border-color: $color;
+    }
     &::before {
         background-color: $color;
+        border-color: $color;
     }
     &:hover {
         color: $color;
@@ -61,8 +68,10 @@
     }
     &.btn-outline {
         color: $color;
+        border-color: $color;
         &:hover {
-            color: if($color == $light-color, $primary-color, $white);
+          border-color: transparent;
+          color: if($color == $light-color, $primary-color, $white);
         }
     }
 }

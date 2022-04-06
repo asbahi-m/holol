@@ -16,15 +16,25 @@ $card-padding: $gutter-base;
 $card-radius: $radius-width !default;
 $card-border: $border-width !default;
 $card-img-height: 220px !default;
+$card-list-media: "sm" !default;
 
 .card {
   width: 100%;
+  position: relative;
   overflow: hidden;
   &:not(:last-child) {
     margin-bottom: $gutter-base;
   }
   .card-img {
-    height: $card-img-height;
+    @include media-down("xs") {
+      height: $card-img-height;
+    }
+    @include media-up("sm") {
+      height: $card-img-height - 40px;
+    }
+    @include media-up("md") {
+      height: $card-img-height;
+    }
     position: relative;
     overflow: hidden;
     border: solid $border-width $border-color;
@@ -33,13 +43,14 @@ $card-img-height: 220px !default;
     .img {
       display: flex;
       justify-content: center;
-      width: 100%;
+      align-items: center;
       height: 100%;
       overflow: hidden;
     }
     img {
-      height: 100%;
-      flex: 1 0 100%;
+      max-width: 100%;
+      // max-height: 100%;
+      // flex: 1 0 100%;
       @include transition(transform);
     }
     .buttons {
@@ -95,8 +106,8 @@ $card-img-height: 220px !default;
     }
   }
 }
-@include media-up("sm") {
-  .card-list {
+.card-list {
+  @include media-up($card-list-media) {
     .card {
       width: 100%;
       display: flex;
@@ -107,6 +118,12 @@ $card-img-height: 220px !default;
         border-top-#{$right-dir}-radius: 0;
         border-bottom-#{$left-dir}-radius: $card-radius;
         border-bottom-#{$right-dir}-radius: 0;
+        img {
+          @include media-up-down($card-list-media, "lg") {
+            max-width: unset;
+            max-height: 100%;
+          }
+        }
       }
       .card-body {
         flex: 0 1 auto;
@@ -127,7 +144,7 @@ $card-img-height: 220px !default;
       flex: 0 0 50%;
       max-width: 50%;
     }
-    @include media-up("md") {
+    @include media-up("lg") {
       flex: 0 0 33.33%;
       max-width: 33.33%;
     }

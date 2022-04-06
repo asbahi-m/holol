@@ -1,4 +1,5 @@
 @use "sass:color";
+@use "sass:math";
 @use "../tools" as *;
 
 // navbar + [navbar-light | navbar-primary | navbar-secondary]
@@ -9,6 +10,7 @@
 //                    => nav-link
 
 // Navbar Variables
+$navbar-height:   120px !default;
 $navbar-padding: $gutter-lg !default;
 $toggle-size: 40px !default;
 $toggle-media: "md" !default;
@@ -18,7 +20,7 @@ $collapse-color: $secondary-color !default;
 $collapse-bg: $primary-color !default;
 $collapse-link-border: 1px solid color.scale($collapse-bg, $lightness: 40%) !default;
 $fixed-color: $secondary-color !default;
-$fixed-bg: color.scale($primary-color, $lightness: 90%) !default;
+$fixed-bg: color.scale($primary-color, $lightness: 95%) !default;
 
 .navbar {
   height: $navbar-height;
@@ -32,7 +34,7 @@ $fixed-bg: color.scale($primary-color, $lightness: 90%) !default;
     @extend %flex-center;
   }
   .navbar-brand {
-    height: 100%;
+    height: auto;
     font-size: $font-size-md;
     font-weight: bold;
     padding-#{$right-dir}: $navbar-padding;
@@ -50,7 +52,6 @@ $fixed-bg: color.scale($primary-color, $lightness: 90%) !default;
       height: $toggle-size;
       width: $toggle-size;
       margin-#{$left-dir}: auto;
-      border: 1px solid $collapse-bg;
       line-height: 1;
       text-align: center;
       font-size: $font-size-md;
@@ -61,8 +62,8 @@ $fixed-bg: color.scale($primary-color, $lightness: 90%) !default;
         background-color: color-hvr($collapse-bg);
       }
       &.active {
-        background-color: $secondary-color;
-        color: $collapse-bg;
+        background-color: $dark-color;
+        color: $light-color;
       }
     }
   }
@@ -90,8 +91,12 @@ $fixed-bg: color.scale($primary-color, $lightness: 90%) !default;
       $zIndex: $zIndex-fixed
     );
     @include media-max-height() {
-      height: $navbar-height - 70;
+      height: 80px;
+      .navbar-brand img {
+        max-height: 80px;
+      }
     }
+    box-shadow: 0 5px 10px 0px color.scale($black, $alpha: -90%);
     background-color: $fixed-bg;
     color: $fixed-color !important;
     .navbar-brand {
@@ -109,6 +114,13 @@ $fixed-bg: color.scale($primary-color, $lightness: 90%) !default;
   .collapse {
     @include media-down($toggle-media) {
       flex-direction: column;
+      @include media-max-height() {
+        flex-direction: row;
+        flex-wrap: wrap;
+        .nav-link {
+          flex-grow: 1;
+        }
+      }
       @include position(
         auto,
         0,
@@ -166,10 +178,13 @@ $fixed-bg: color.scale($primary-color, $lightness: 90%) !default;
 }
 
 // Formating Navbar Classe Colors
-@include make-colors("navbar") using ($color) {
-  color: $color !important;
+@include make-colors("navbar") using ($name, $color) {
+  color: $color;
+  .nav-link {
+    color: $color;
+  }
   .nav-link:hover:not(.active) {
-    color: color-hvr($color) !important;
+    color: color-hvr($color);
   }
   .nav-link.active::after {
     border-#{$left-dir}-color: $color;

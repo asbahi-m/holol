@@ -25,7 +25,7 @@ import "./directives";
 
 // CSS Files
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import "@/assets/scss/main.scss";
+import "@/assets/scss/app.scss";
 
 Vue.config.productionTip = false;
 

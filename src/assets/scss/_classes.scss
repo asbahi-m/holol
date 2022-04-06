@@ -1,4 +1,5 @@
 @use "sass:map";
+@use "sass:color";
 @use "tools" as *;
 
 .text-center {
@@ -37,13 +38,18 @@
   direction: ltr;
 }
 
-@include make-colors("bg") using ($color) {
-  background: $color;
-  color: if($color == $light-color, map.get($colors-reverse, "light"), $white);
+@include make-colors("bg") using ($name, $color) {
+  background-color: $color !important;
+  // color: if($color == $light-color, map.get($colors-reverse, "light"), $white) !important;
+  color: if(color.lightness($color) >= 50%, map.get($colors-reverse, $name), $white) !important;
 }
 
-@include make-colors("text") using ($color) {
-  color: $color;
+@include make-colors("text") using ($name, $color) {
+  color: $color !important;
+}
+
+.border-radius {
+  border-radius: $radius-width;
 }
 
 .underline::after {
@@ -57,6 +63,22 @@
 
 .uppercase {
   text-transform: uppercase;
+}
+
+.no-gutters {
+  padding: 0 !important;
+}
+
+.stretched-link::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: auto;
+  content: "";
+  background-color: rgba(0,0,0,0);
 }
 
 .overlay-img {
@@ -96,21 +118,24 @@
 
 #to-up {
   // display: none;
+  @include position($to-up-size, $to-up-size, fixed, 80%, 5%, $zIndex-to-up);
   @include media-down("xs") {
     #{$left-dir}: 15px;
   }
-  @include position($to-up-size, $to-up-size, fixed, 80%, 5%, $zIndex-to-up);
   border-radius: $to-up-radius;
-  background: $secondary-color;
+  box-shadow: 0 3px 5px 0px color.scale($black, $alpha: -80%);
+  line-height: $to-up-size;
   .fas {
-    color: $secondary-color;
+    color: $dark-color;
     position: relative;
     @include transition(color, $delay: 0.1s);
   }
   &::after {
     border-radius: $to-up-radius;
-    transform: scale(1);
-    @include transition(top, 0.3s, ease-in, 0.1s);
+    background: $dark-color;
+    transform: scaleY(0);
+    transform-origin: 50% 100%;
+    @include transition(transform, 0.3s, ease-out, 0.1s);
   }
   &:hover {
     .fas {
@@ -118,7 +143,7 @@
       animation: hvr-icon-up 0.3s ease-out;
     }
     &::after {
-      top: -100%;
+      transform: scaleY(1);
     }
   }
 }

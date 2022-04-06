@@ -85,7 +85,7 @@ footer {
         flex-basis: 50%;
         max-width: 50%;
       }
-      @include media-up-down("576px", "767.98px") {
+      @include media-up-down("sm", "md") {
         .nav-link {
           flex-basis: 100%;
           max-width: 100%;

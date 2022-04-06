@@ -125,7 +125,9 @@
         :title="$t('post.service_order')"
         :image="require('@/assets/images/service-order.jpg')"
       />
-      <img :src="$store.getters.uploadPath('branch3.jpg')" :alt="$t('site_name')" />
+      <div class="img">
+        <img :src="$store.getters.uploadPath('branch3.jpg')" :alt="$t('site_name')" />
+      </div>
     </section>
   </main>
 </template>
@@ -256,7 +258,7 @@ section {
   align-items: center;
   border: 1px solid $primary-color;
   border-radius: 20px;
-  color: $primary-color;
+  color: $primary-color !important;
   span {
     width: 3px;
     height: 10px;
@@ -498,6 +500,12 @@ section {
     }
     iframe {
       height: auto;
+    }
+    .img {
+      overflow: hidden;
+      img {
+        height: 100%;
+      }
     }
   }
 }

@@ -5,8 +5,8 @@ $nav-radius: $radius-width !default;
 $nav-border-width: $border-width !default;
 $nav-border-color: $border-color !default;
 $nav-link-padding: $gutter-sm $gutter-md !default;
-$nav-color: $primary-color !default;
-$nav-active-color: $gray-70 !default;
+$nav-color: $body-color !default;
+$nav-active-color: $body-color !default;
 
 .nav {
   display: flex;
@@ -17,15 +17,16 @@ $nav-active-color: $gray-70 !default;
 }
 
 .nav-link {
-  display: block;
+  display: inline-block;
   padding: $nav-link-padding;
-  color: $nav-color;
+  color: inherit;
   @include transition;
   &:hover:not(.active) {
     color: color-hvr($nav-color);
   }
   &.active {
     color: $nav-active-color;
+    font-weight: bold;
   }
 }
 
